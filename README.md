@@ -1,2 +1,2 @@
-# CollaborativeCopy
-Linux环境高级编程作业二
+# 作业
+作业的master分支，拉取这个分支然后新建分支做作业

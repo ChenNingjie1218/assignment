@@ -1,4 +1,4 @@
-# Note, you can't have comments below in a '>' section, that's why here are the comments upfront.
+<!-- # Note, you can't have comments below in a '>' section, that's why here are the comments upfront.
 # -hicpp-deprecated-headers: unfortunately, should be restrictable to <>-includes
 # -readability-function-cognitive-complexity: goes bogus in gtests unfortunately
 # -cppcoreguidelines-pro-type-member-init: buggy unfortunately
@@ -94,4 +94,4 @@ CheckOptions:
 # delete third-party files.
 HeaderFilterRegex: '.*'
 # negative look ahead not yet supported
-#HeaderFilterRegex: "^.*(?:_deps).*"
+#HeaderFilterRegex: "^.*(?:_deps).*" -->

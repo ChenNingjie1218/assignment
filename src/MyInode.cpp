@@ -1,7 +1,5 @@
 #include "MyInode.h"
 
-#include <cstdint>
-
 MyInode::MyInode() {
   time_t create_time = time(NULL);
   set_ctime(create_time);
@@ -37,14 +35,16 @@ void MyInode::serialize(std::fstream &fs) const {
   fs.write(reinterpret_cast<const char *>(&i_mtime_), sizeof(i_mtime_));
   fs.write(reinterpret_cast<const char *>(&i_block_count_),
            sizeof(i_block_count_));
-  fs.write(reinterpret_cast<const char *>(&i_block_), sizeof(i_block_));
+  fs.write(reinterpret_cast<const char *>(i_block_.data()),
+           sizeof(uint32_t) * i_block_.size());
 }
 void MyInode::deserialize(std::fstream &fs) {
   fs.read(reinterpret_cast<char *>(&i_size_), sizeof(i_size_));
   fs.read(reinterpret_cast<char *>(&i_ctime_), sizeof(i_ctime_));
   fs.read(reinterpret_cast<char *>(&i_mtime_), sizeof(i_mtime_));
   fs.read(reinterpret_cast<char *>(&i_block_count_), sizeof(i_block_count_));
-  fs.read(reinterpret_cast<char *>(&i_block_), sizeof(i_block_));
+  fs.read(reinterpret_cast<char *>(i_block_.data()),
+          sizeof(uint32_t) * i_block_.size());
 }
 
 void MyInode::add_i_size(uint32_t increment) { i_size_ += increment; }

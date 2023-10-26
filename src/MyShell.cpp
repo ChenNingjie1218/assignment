@@ -67,7 +67,7 @@ void MyShell::rm(const char *pathname) { file_system_.remove(pathname); }
 void MyShell::read_from_myfilesystem(std::string &pathname,
                                      std::string &dstname) {
   std::ofstream fw;
-  fw.open(dstname, std::ios::out);
+  fw.open(dstname, std::ios::out | std::ios::binary);
   if (fw) {
     int fd = file_system_.open(pathname.c_str(), std::ios::in);
     if (fd != -1) {
@@ -76,7 +76,7 @@ void MyShell::read_from_myfilesystem(std::string &pathname,
       int read_count = 0;
       while ((read_count =
                   file_system_.read(fd, buf->data(), 64 * 1024 * 1024)) > 0) {
-        fw << buf->data();
+        fw.write(buf->data(), read_count);
       }
       delete buf;
       file_system_.close(fd);

@@ -188,24 +188,27 @@ void MyFileSystem::fresh_my_filesystem() {
   file_system_.open(FILESYSTEM_PATH,
                     std::ios::in | std::ios::out | std::ios::binary);
   if (file_system_.is_open()) {
+    //读inode数量
+    file_system_.seekg(static_cast<std::streamoff>(32 * 1024 * 1024),
+                       std::ios::beg);
+    file_system_.read(reinterpret_cast<char*>(&count_inodes_),
+                      sizeof(count_inodes_));
+
     //读超级块
     super_block_.deserialize(file_system_);
 
     //读名字与inode号映射表
-    int mapsize =
-        super_block_.get_block_count() - super_block_.get_free_block_count();
     std::array<char, 16> filename;
     name_to_inode_.clear();
-    for (int i = 0; i < mapsize; ++i) {
+    for (size_t i = 0; i < count_inodes_; ++i) {
       file_system_.read(filename.data(), sizeof(filename));
       name_to_inode_.push_back(filename);
     }
+
     //读inode表
-    file_system_.seekg(static_cast<std::streamoff>(32 * 1024 * 1024),
-                       std::ios::beg);
-    // file_system_ >> count_inodes_;
-    file_system_.read(reinterpret_cast<char*>(&count_inodes_),
-                      sizeof(count_inodes_));
+    file_system_.seekg(
+        static_cast<std::streamoff>(32 * 1024 * 1024) + sizeof(count_inodes_),
+        std::ios::beg);
     MyInode inode;
     inodes_.clear();
     for (size_t i = 0; i < count_inodes_; ++i) {

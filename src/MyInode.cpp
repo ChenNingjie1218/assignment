@@ -4,9 +4,11 @@ MyInode::MyInode() {
   time_t create_time = time(NULL);
   set_ctime(create_time);
   set_mtime(create_time);
+  set_i_block_count(0);
+  set_i_size(0);
 }
 
-int MyInode::read_file(uint32_t offset) {
+int MyInode::read_file(uint64_t offset) {
   if (offset < i_size_)
     return i_block_[offset / (64 * 1024 * 1024)];
   else
@@ -19,9 +21,9 @@ time_t MyInode::get_ctime() const { return i_ctime_; }
 
 time_t MyInode::get_mtime() const { return i_mtime_; }
 
-uint32_t MyInode::get_size() const { return i_size_; }
+uint64_t MyInode::get_size() const { return i_size_; }
 
-void MyInode::set_i_size(uint32_t size) { i_size_ = size; }
+void MyInode::set_i_size(uint64_t size) { i_size_ = size; }
 
 void MyInode::set_ctime(time_t ctime) { i_ctime_ = ctime; }
 
@@ -47,7 +49,7 @@ void MyInode::deserialize(std::fstream &fs) {
           sizeof(uint32_t) * i_block_.size());
 }
 
-void MyInode::add_i_size(uint32_t increment) { i_size_ += increment; }
+void MyInode::add_i_size(uint64_t increment) { i_size_ += increment; }
 
 std::vector<uint32_t> MyInode::get_block_vector() const {
   std::vector<uint32_t> block_vector;

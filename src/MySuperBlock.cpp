@@ -9,7 +9,7 @@ MySuperBlock::MySuperBlock() : block_count_(max_block), size_(size_block) {
   update_free_block_count();
 }
 
-uint16_t MySuperBlock::allocate() {
+int MySuperBlock::allocate() {
   int size = bitmap_.size();
   for (int i = 0; i < size; ++i) {
     if (!bitmap_[i]) {
@@ -67,8 +67,11 @@ void MySuperBlock::update_free_block_count() {
 //序列化
 void MySuperBlock::serialize(std::fstream& fs) const {
   fs.seekp(0, std::ios::beg);
-  unsigned long long bitsetdata = bitmap_.to_ullong();
+  // unsigned long long bitsetdata = bitmap_.to_ullong();
+  char bitsetdata[128];
+  std::strncpy(bitsetdata, bitmap_.to_string().c_str(), 128);
   fs.write(reinterpret_cast<const char*>(&bitsetdata), sizeof(bitsetdata));
+  // std::cout << sizeof(bitsetdata) << std::endl;
   fs.write(reinterpret_cast<const char*>(&block_count_), sizeof(block_count_));
   fs.write(reinterpret_cast<const char*>(&size_), sizeof(size_));
   fs.write(reinterpret_cast<const char*>(&free_block_count_),
@@ -78,7 +81,9 @@ void MySuperBlock::serialize(std::fstream& fs) const {
 //反序列化
 void MySuperBlock::deserialize(std::fstream& fs) {
   fs.seekg(0, std::ios::beg);
-  unsigned long long bitsetdata;
+  char bitsetdata[128];
+  std::strncpy(bitsetdata, bitmap_.to_string().c_str(), 128);
+  // unsigned long long bitsetdata;
   fs.read(reinterpret_cast<char*>(&bitsetdata), sizeof(bitsetdata));
   bitmap_ = std::bitset<127>(bitsetdata);
   fs.read(reinterpret_cast<char*>(&block_count_), sizeof(block_count_));

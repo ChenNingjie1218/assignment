@@ -10,15 +10,15 @@ class MyInode {
  public:
   MyInode();
   ~MyInode() = default;
-  int read_file(uint32_t offset);
+  int read_file(uint64_t offset);
   void write_file(int block);
   time_t get_ctime() const;
   time_t get_mtime() const;
-  uint32_t get_size() const;
+  uint64_t get_size() const;
   // std::shared_mutex& get_mutex();
   void serialize(std::fstream &fs) const;
   void deserialize(std::fstream &fs);
-  void add_i_size(uint32_t increment);
+  void add_i_size(uint64_t increment);
   std::vector<uint32_t> get_block_vector() const;
   void rewrite();
 
@@ -26,8 +26,8 @@ class MyInode {
   void set_ctime(time_t ctime);
   void set_mtime(time_t mtime);
   void set_i_block_count(uint16_t count);
-  void set_i_size(uint32_t size);
-  uint32_t i_size_;                    //文件大小
+  void set_i_size(uint64_t size);
+  uint64_t i_size_;                    //文件大小
   time_t i_ctime_;                     //创建时间
   time_t i_mtime_;                     //修改时间
   uint16_t i_block_count_;             //文件占用块数

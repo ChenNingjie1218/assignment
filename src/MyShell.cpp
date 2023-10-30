@@ -1,4 +1,6 @@
 #include "MyShell.h"
+
+#include <sys/types.h>
 MyShell::MyShell() {
   init();
   help();
@@ -102,13 +104,21 @@ void MyShell::write_to_myfilesystem(std::string &srcname,
     if (fd != -1) {
       std::array<char, 64 * 1024 * 1024> *buf =
           new std::array<char, 64 * 1024 * 1024>;
-      while (!fr.eof()) {
+      ssize_t can_write = 1;
+      while (!fr.eof() && can_write) {
         fr.read(buf->data(), 64 * 1024 * 1024);
-        file_system_.write(fd, buf->data(), fr.gcount());
+        if (!fr.gcount()) {
+          break;
+        }
+        can_write = file_system_.write(fd, buf->data(), fr.gcount());
       }
       delete buf;
       file_system_.close(fd);
       fr.close();
+      if (!can_write) {
+        std::cout << "该文件无法写入文件系统" << std::endl;
+        rm(pathname.c_str());
+      }
 #ifndef NDEBUG
       std::cout << "写完了" << std::endl;
 #endif

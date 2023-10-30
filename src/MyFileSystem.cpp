@@ -1,14 +1,9 @@
 #include "MyFileSystem.h"
 
 #include <cstddef>
-const char* FILESYSTEM_PATH = "../../doc/myfilesystem";
+const char* FILESYSTEM_PATH = "doc/myfilesystem";
 MyFileSystem::MyFileSystem() { fresh_my_filesystem(); };
 MyFileSystem::~MyFileSystem() { write_my_filesystem(); }
-// template <typename T>
-// std::fstream& operator<<(std::fstream& os, const T& obj) {
-//   os << obj;
-//   return os;
-// }
 
 /*格式化文件系统*/
 void MyFileSystem::format() {
@@ -193,7 +188,10 @@ void MyFileSystem::fresh_my_filesystem() {
                        std::ios::beg);
     file_system_.read(reinterpret_cast<char*>(&count_inodes_),
                       sizeof(count_inodes_));
-
+    if (count_inodes_ > 128) {
+      file_system_.close();
+      format();
+    }
     //读超级块
     super_block_.deserialize(file_system_);
 

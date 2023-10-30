@@ -46,6 +46,6 @@ class MyFileSystem {
   MySuperBlock super_block_;                         //超级块
   std::vector<std::array<char, 16>> name_to_inode_;  //名字对应id号
   std::fstream file_system_;                         //文件系统
-  uint32_t offset;                                   //文件偏移量
+  uint64_t offset;                                   //文件偏移量
 };
 #endif

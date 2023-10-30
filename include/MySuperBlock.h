@@ -2,6 +2,7 @@
 #define MYSUPERBLOCK_H
 #include <bitset>
 #include <cstdint>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 
@@ -10,7 +11,7 @@ class MySuperBlock {
   MySuperBlock();
   ~MySuperBlock() = default;
 
-  uint16_t allocate();
+  int allocate();
   // void free();
   void allocate_block(uint16_t block_number);
   void free_block(uint16_t block_number);

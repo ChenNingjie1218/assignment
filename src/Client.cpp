@@ -5,6 +5,10 @@
 #include <cstring>
 #include <iostream>
 
+#include "authentication.h"
+#include "digital_signature.h"
+#include "encryption.h"
+#include "envolop.h"
 int main() {
   // 创建客户端套接字
   int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -32,14 +36,47 @@ int main() {
   }
 
   // 发送数据到服务器
-  const char *message = "你好，服务器";
-  if (send(clientSocket, message, strlen(message), 0) < 0) {
+
+  // 要加密的明文
+  std::string message;
+  std::string plaintext = "NetSafety";
+  int plaintextLength = plaintext.length();  // 减去结尾的空字符
+
+  // --------------------- 生成密钥 ---------------------
+  unsigned char key[32];
+  size_t keyLength = sizeof(key);
+  RAND_bytes(key, keyLength);
+
+  // -----------------------   加密  ---------------------
+  unsigned char ciphertext[plaintextLength];
+  encrypt((unsigned char *)plaintext.c_str(), plaintextLength, key, ciphertext);
+
+  // ----------------------- 消息认证 ---------------------
+  unsigned char digest[SHA256_DIGEST_LENGTH];
+  // 计算SHA-256摘要
+  sha256(plaintext, digest);
+  // for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i) {
+  //   printf("%02x", digest[i]);
+  // }
+  // ----------------------- 数字签名 ---------------------
+  std::string privateKeyPath = "private_key_signature.pem";
+  std::string signature;
+  signMessage(std::string((char *)digest), privateKeyPath, signature);
+  // ----------------------- 数字信封 ---------------------
+  const char *publicKeyFile = "public_key_envolop.pem";
+  // 加密密钥
+  std::string encryptedData = encryptData(publicKeyFile, key, keyLength);
+
+  message = encryptedData + (std::string((char *)ciphertext)) + "~" + signature;
+  std::cout << "发送的明文是：" << plaintext << std::endl;
+  std::cout << "发送的消息是：" << message << std::endl;
+  //发送
+  if (send(clientSocket, message.c_str(), message.length(), 0) < 0) {
     std::cerr << "发送失败" << std::endl;
     return -1;
   }
-
   // 接收服务器响应
-  char buffer[1024] = {0};
+  unsigned char buffer[1024] = {0};
   if (read(clientSocket, buffer, 1024) < 0) {
     std::cerr << "接收失败" << std::endl;
     return -1;

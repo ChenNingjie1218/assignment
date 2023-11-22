@@ -1,12 +1,12 @@
 FROM ubuntu:20.04
 LABEL authors="202352080412-ChenNingjie"
-WORKDIR /app
+WORKDIR /usr/local/bin
 
 COPY . .
 
 RUN apt-get update &&\
-    apt-get install -y openjdk-21-jdk  curl \
-    && rm -rf /var/lib/apt/lists/*
+    apt-get install -y openjdk-21-jdk &&\
+    rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL -o /tmp/apache-maven.tar.gz https://dlcdn.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz && \
         tar -xzf /tmp/apache-maven.tar.gz -C /opt && \
@@ -23,4 +23,4 @@ RUN cp ./target/DistributedSystem-1.0-SNAPSHOT.jar /usr/local/bin/
 RUN cd target && ls -l
 RUN chmod 755 /usr/local/bin/DistributedSystem-1.0-SNAPSHOT.jar
 
-CMD ["java", "-jar", "/usr/local/bin/app.jar"]
+CMD ["java", "-jar", "/usr/local/bin/DistributedSystem-1.0-SNAPSHOT.jar"]

@@ -1,0 +1,34 @@
+
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.cache.grpc";
+option java_outer_classname = "CacheProto";
+
+package Cache;
+
+service KeyValueService {
+  rpc getValue (KeyRequest) returns (KeyValueResponse);
+  rpc putValue (KeyValueRequest) returns (EmptyResponse);
+  rpc removeKey (KeyRequest) returns (NumberResponse);
+}
+
+message KeyRequest {
+  string key = 1;
+}
+
+message KeyValueResponse {
+  string key = 1;
+  string value = 2;
+}
+
+message KeyValueRequest {
+  string key = 1;
+  string value = 2;
+}
+
+message EmptyResponse {
+
+}
+message NumberResponse{
+  int32 number = 1;
+}

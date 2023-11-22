@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CacheServer" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="DEBUG_MODE" value="true" />
+    <module name="DistributedSystem" />
+    <option name="PROGRAM_PARAMETERS" value="6749" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.CacheServer" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="org.example.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -8,11 +8,12 @@ import com.cache.grpc.KeyValueResponse;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+@Component
 public class GrpcServer {
     private Server server;
     private static final int BASE_PORT = 6749;
@@ -20,7 +21,7 @@ public class GrpcServer {
     public static Map<String, String> keyValue = new HashMap<>();
 
     public static String gRPCport;
-    private void start() throws IOException {
+    public void start() throws IOException {
 //        int port = getNextPort();
         System.out.println(gRPCport);
         int port = Integer.parseInt(gRPCport);
@@ -44,7 +45,7 @@ public class GrpcServer {
         }
     }
 
-    private void blockUntilShutdown() throws InterruptedException {
+    public void blockUntilShutdown() throws InterruptedException {
         if (server != null) {
             server.awaitTermination();
         }

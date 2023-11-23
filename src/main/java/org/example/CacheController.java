@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -38,7 +39,7 @@ public class CacheController {
 
 
     @GetMapping("/{key}")
-    public ResponseEntity<JSONObject> getValue(@PathVariable String key) throws InterruptedException{
+    public ResponseEntity<Map<String, Object>> getValue(@PathVariable String key) throws InterruptedException{
         int id = key.length() % 3;
 //        connect("127.0.0.1",rpc_port[id]);
         connect("127.0.0.1",rpc_port[0]);
@@ -49,8 +50,8 @@ public class CacheController {
         if(response.getValue().isEmpty()){
             return ResponseEntity.notFound().build();
         }else{
-//            Map<String, Object> result = new HashMap<>();
-            JSONObject result = new JSONObject();
+            Map<String, Object> result = new HashMap<>();
+//            JSONObject result = new JSONObject();
             // 创建 ObjectMapper 实例
             ObjectMapper objectMapper = new ObjectMapper();
             try {

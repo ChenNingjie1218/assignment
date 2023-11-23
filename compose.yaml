@@ -16,9 +16,6 @@ services:
 
   server2:
     image: cacheserver
-    build:
-      context: ./
-      dockerfile: Dockerfile
     ports:
       - 9528:9528
       - 6750:6750
@@ -30,9 +27,6 @@ services:
 
   server3:
     image: cacheserver
-    build:
-      context: ./
-      dockerfile: Dockerfile
     ports:
       - 9529:9529
       - 6751:6751

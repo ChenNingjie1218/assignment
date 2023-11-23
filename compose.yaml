@@ -1,6 +1,7 @@
 version: '3'
 services:
   server1:
+    image: cacheserver
     build:
       context: ./
       dockerfile: Dockerfile
@@ -14,6 +15,7 @@ services:
       - cacheservernet
 
   server2:
+    image: cacheserver
     build:
       context: ./
       dockerfile: Dockerfile
@@ -27,6 +29,7 @@ services:
       - cacheservernet
 
   server3:
+    image: cacheserver
     build:
       context: ./
       dockerfile: Dockerfile

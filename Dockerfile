@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 LABEL authors="202352080412-ChenNingjie"
-WORKDIR /
+WORKDIR /server
 
 RUN apt-get update &&\
     apt-get install -y openjdk-17-jdk &&\
@@ -17,9 +17,9 @@ COPY ./settings.xml /opt/maven/conf/
 ENV PATH="/opt/maven/bin:$PATH"
 
 #RUN mvn clean package -DoutputDirectory=./
-RUN mvn clean -f ./pom.xml
-RUN mvn package -f ./pom.xml
-RUN #cp ./target/DistributedSystem-1.0-SNAPSHOT.jar /usr/server/
+RUN mvn clean
+RUN mvn package
+#RUN cp ./target/DistributedSystem-1.0-SNAPSHOT.jar /usr/server/
 RUN chmod 755 ./target/DistributedSystem-1.0-SNAPSHOT.jar
 
 CMD ["java", "-jar", "./target/DistributedSystem-1.0-SNAPSHOT.jar"]

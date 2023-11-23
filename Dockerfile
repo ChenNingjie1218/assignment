@@ -19,7 +19,7 @@ ENV PATH="/opt/maven/bin:$PATH"
 #RUN mvn clean package -DoutputDirectory=./
 RUN mvn clean -f ./pom.xml
 RUN mvn package -f ./pom.xml
-RUN cp ./target/DistributedSystem-1.0-SNAPSHOT.jar /usr/server/
-RUN chmod 755 /usr/server/DistributedSystem-1.0-SNAPSHOT.jar
+RUN #cp ./target/DistributedSystem-1.0-SNAPSHOT.jar /usr/server/
+RUN chmod 755 ./target/DistributedSystem-1.0-SNAPSHOT.jar
 
-CMD ["java", "-jar", "/usr/server/DistributedSystem-1.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "./target/DistributedSystem-1.0-SNAPSHOT.jar"]

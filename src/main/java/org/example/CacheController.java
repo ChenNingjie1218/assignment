@@ -41,9 +41,9 @@ public class CacheController {
     @GetMapping("/{key}")
     public ResponseEntity<Map<String, Object>> getValue(@PathVariable String key) throws InterruptedException{
         int id = key.length() % 3;
-//        connect("127.0.0.1",rpc_port[id]);
-        connect("127.0.0.1",rpc_port[0]);
-        System.out.println(rpc_port[0]);
+        connect("127.0.0.1",rpc_port[id]);
+//        connect("127.0.0.1",rpc_port[0]);
+//        System.out.println(rpc_port[id]);
         KeyRequest request = KeyRequest.newBuilder().setKey(key).build();
         KeyValueResponse response = blockingStub.getValue(request);
         shutdown();
@@ -78,8 +78,8 @@ public class CacheController {
                 Object value = dataMap.get(key);
                 String stringValue = objectMapper.writeValueAsString(value);
                 int id = key.length() % 3;
-//            connect("127.0.0.1",rpc_port[id]);
-                connect("127.0.0.1",rpc_port[0]);
+            connect("127.0.0.1",rpc_port[id]);
+//                connect("127.0.0.1",rpc_port[0]);
                 KeyValueRequest request = KeyValueRequest.newBuilder()
                         .setKey(key)
                         .setValue(stringValue)
@@ -113,8 +113,8 @@ public class CacheController {
     @DeleteMapping("/{key}")
     public ResponseEntity<Integer> removeValue(@PathVariable String key) throws InterruptedException {
         int id = key.length() % 3;
-//        connect("127.0.0.1",rpc_port[id]);
-        connect("127.0.0.1",rpc_port[0]);
+        connect("127.0.0.1",rpc_port[id]);
+//        connect("127.0.0.1",rpc_port[0]);
         KeyRequest request = KeyRequest.newBuilder().setKey(key).build();
         NumberResponse response = blockingStub.removeKey(request);
         shutdown();

@@ -9,12 +9,11 @@ services:
     ports:
       - 9527:9527
       - 6749:6749
-      - 9525:9525
-      - 6748:6748
     environment:
       - SERVER_PORT=9527
       - RPC_PORT=6749
-    network_mode: host
+    networks:
+    - myspring
 
   server2:
     image: cacheserver
@@ -25,7 +24,8 @@ services:
     environment:
         - SERVER_PORT=9528
         - RPC_PORT=6750
-    network_mode: host
+    networks:
+    - myspring
 
   server3:
     image: cacheserver
@@ -36,4 +36,8 @@ services:
     environment:
       - SERVER_PORT=9529
       - RPC_PORT=6751
-    network_mode: host
+    networks:
+    - myspring
+networks:
+  myspring:
+    driver: bridge

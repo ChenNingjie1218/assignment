@@ -20,6 +20,7 @@ public class CacheController {
     private ManagedChannel channel;
     private KeyValueServiceGrpc.KeyValueServiceBlockingStub blockingStub;
     int[] rpc_port = new int[]{6749,6750,6751};
+		string[] rpc_ip = new string[]{"server1", "server2", "server3"};
     public void connect(String host, int port){
         //初始化连接
         channel = ManagedChannelBuilder.forAddress(host, port)
@@ -41,7 +42,7 @@ public class CacheController {
     @GetMapping("/{key}")
     public ResponseEntity<Map<String, Object>> getValue(@PathVariable String key) throws InterruptedException{
         int id = key.length() % 3;
-        connect("127.0.0.1",rpc_port[id]);
+        connect(rpc_ip[id],rpc_port[id]);
 //        connect("127.0.0.1",rpc_port[0]);
 //        System.out.println(rpc_port[id]);
         KeyRequest request = KeyRequest.newBuilder().setKey(key).build();

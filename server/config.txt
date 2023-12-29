@@ -1,0 +1,3 @@
+v1.1
+build/modules/libmodule1.so
+server/mission1.json

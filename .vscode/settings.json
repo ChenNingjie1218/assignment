@@ -1,0 +1,6 @@
+{
+  "clangd.fallbackFlags": [
+    "-I/home/chenningjie-202352080412/work/experience/work5/modules",
+    "-I/home/chenningjie-202352080412/work/experience/work5/"
+  ],
+}
